@@ -1,21 +1,29 @@
-// To Do: create a function for the button click event to add a new div/column with an item to the inventory list.
-
-//To Do: create a function for the button click event to remove the item from the inventory list and add it to the sold list. with confirmation.
-
-//To Do: create a function for the sold list to add it to a table with the item name, price, date sold, and total revenue.
-
 // Set Variables
 let addButton = document.getElementById('add-button');
 let inventoryEl = document.getElementById('inventoryEl');
 let salesEl = document.getElementById('salesEl');
 let soldButton = document.getElementById('sold-button');
+let tableBody = document.querySelector('#tableBody');
+let revenueEl = document.getElementById('revenueEl');
+let divRow = document.querySelector("div.row")
 
-let inventoryList = [];
-let salesList = [];
 
-// Loads Inventory
-localStorage.getItem('inventory') ? inventoryList = JSON.parse(localStorage.getItem('inventory')) : inventoryList = [];
+//Helper Functions
+function loadInventory() {
+    let inventoryList = JSON.parse(localStorage.getItem('inventory'));
+    if (!inventoryList) {
+        inventoryList = [];
+    }
+    return inventoryList;
+}
 
+function loadSales() {
+    let salesList = JSON.parse(localStorage.getItem('sales'));
+    if (!salesList) {
+        salesList = [];
+    }
+    return salesList;
+}
 
 // Add Button Event Listener
 addButton.addEventListener('click', function() {
@@ -42,7 +50,9 @@ addButton.addEventListener('click', function() {
 
 // Add Item Function
 function addItem(item, updateList = true) {
+    let inventoryList = loadInventory();
     let itemEl = document.createElement("div");
+    
     itemEl.classList.add('card');
     itemEl.classList.add('col');
     itemEl.style.width = "18rem";
@@ -67,11 +77,12 @@ function addItem(item, updateList = true) {
 // Show Inventory Function
 
 function showInventory() {
-    localStorage.getItem("inventory");
+    let inventoryList = loadInventory();
+    
     inventoryList.forEach(function(item) {
         addItem(item, false);
     }
-)
+) 
     if(inventoryList.length === 0) {
         let h3 = document.createElement("h3");
         h3.textContent = "No Inventory To Display";
@@ -80,65 +91,106 @@ function showInventory() {
 };
 
 // Loads Inventory
-window.onload = showInventory();
-//To Do: create a function for the button click event to remove the item from the inventory list and add it to the sold list. with confirmation.
-
-/* soldButton.addEventListener('click', function(event) {
-    event.preventDefault();
-    sellItem = confirm("Are you sure you have sold this item?");
-    if(sellItem == true) {
-        item.sold = true;
-        let soldItem = inventoryList.splice(inventoryList.indexOf(item), 1);
-        salesList.push(soldItem);
-        item.dateSold = prompt("Enter the date sold", "MM/DD/YYYY");
-        localStorage.setItem('inventory', JSON.stringify(inventoryList));
-        localStorage.setItem('sales', JSON.stringify(salesList));
-    }
-    else{
-        alert("Item not sold");
-        return;
-    }
-}); */
+//window.onload = showInventory();
 
 // Sold Button Event Listener
 
-// Assuming you have a way to select all sold buttons, e.g., by a class name
-    let divRow = document.querySelector("div.row")
-    divRow.addEventListener('click', function(event) {
-        const target = event.target;
-        if(target.matches('#sold-button')) {
-        // Confirm the sale
-        sellItem = confirm("Are you sure you have sold this item?");
-        event.stopPropagation();
-        //event.stopImmediatePropagation();
+divRow.addEventListener('click', function(event) {
+    
+    let inventoryList = loadInventory();
+    let salesList = loadSales();
+    
+    const target = event.target;
+    if(target.matches('#sold-button')) {
+    // Confirm the sale
+    sellItem = confirm("Are you sure you have sold this item?");
+    event.stopPropagation();
+    //event.stopImmediatePropagation();
 
-            if(sellItem == true) {
-                // Find the item associated with this button
-                let itemElement = event.target.closest('.card');
-                let itemTitle = itemElement.querySelector('.card-title').textContent;
-                let item = inventoryList.find(i => i.title === itemTitle);
+        if(sellItem == true) {
+            // Find the item associated with this button
+            let itemElement = event.target.closest('.card');
+            let itemTitle = itemElement.querySelector('.card-title').textContent;
+            let item = inventoryList.find(i => i.title === itemTitle);
 
-                if (item) {
-                    // Mark the item as sold
-                    item.sold = true;
-                    let soldItem = inventoryList.splice(inventoryList.indexOf(item), 1)[0];
-                    salesList.push(soldItem);
-                    item.dateSold = prompt("Enter the date sold", "MM/DD/YYYY");
+            if (item) {
+                // Mark the item as sold
+                item.sold = true;
+                let soldItem = inventoryList.splice(inventoryList.indexOf(item), 1)[0];
+                salesList.push(soldItem);
+                item.dateSold = prompt("Enter the date sold", "MM/DD/YYYY");
 
-                    // Update localStorage
-                    localStorage.setItem('inventory', JSON.stringify(inventoryList));
-                    localStorage.setItem('sales', JSON.stringify(salesList));
+                // Update localStorage
+                localStorage.setItem('inventory', JSON.stringify(inventoryList));
+                localStorage.setItem('sales', JSON.stringify(salesList));
 
-                    // Optionally, remove the item from the DOM
-                    itemElement.remove();
-                }
-            }
-            else{
-                alert("Item not sold");
-                return;
+                // Optionally, remove the item from the DOM
+                itemElement.remove();
+                renderSales();
             }
         }
-    });
+        else{
+            alert("Item not sold");
+            return;
+        }
+    }
+});
 
 
-//To Do: create a function for the sold list to add it to a table with the item name, price, date sold, and total revenue.
+
+// Load Sales
+
+function renderSales() {
+    let salesList = loadSales();
+    let sum = 0;
+    tableBody.innerHTML = "";
+    if (!salesList) {
+        salesList = [];
+        showInventory();
+        return;
+    }
+    for(let i = 0; i < salesList.length; i++) {
+        let item = salesList[i];
+        let row = document.createElement('tr');
+        row.innerHTML = `
+        <td>${item.title}</td>
+        <td>${item.price}</td>
+        <td>${item.dateSold}</td>
+        `;
+        tableBody.appendChild(row);
+        localStorage.setItem('sales', JSON.stringify(salesList));
+        //getRevenue();
+        
+        sum += parseFloat(item.price);
+    }
+    revenueEl.textContent = `Total Revenue: $${sum.toFixed(2)}`;
+    showInventory();
+}
+
+window.onload = renderSales();
+
+// Total Revenue Math
+
+// function getRevenue() {
+//     let salesList = loadSales();
+//     let sum = 0;
+//     for(let i = 0; i < salesList.length; i++) {
+//         sum += parseFloat(salesList[i].price);
+//         revenueEl.textContent = `Total Revenue: $${sum}`;
+//     }
+// }
+
+// Projected Revenue Math
+
+// function projectedRevenue() {
+//     let inventoryList = loadInventory();
+//     let salesList = loadSales();
+//     let projected = 0;
+//     for(let i = 0; i < inventoryList.length; i++) {
+//         projected += parseFloat(inventoryList[i].price);
+//     }
+//     for(let j = 0; j < salesList.length; j++) {
+//         projected += parseFloat(salesList[j].price);
+//     }
+//     console.log(projected.toFixed(2));
+// }
