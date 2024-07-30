@@ -5,7 +5,8 @@ let salesEl = document.getElementById('salesEl');
 let soldButton = document.getElementById('sold-button');
 let tableBody = document.querySelector('#tableBody');
 let revenueEl = document.getElementById('revenueEl');
-let divRow = document.querySelector("div.row")
+let divRow = document.querySelector("div.row");
+let addItemButton = document.getElementById('addItemButton')
 
 
 //Helper Functions
@@ -25,8 +26,20 @@ function loadSales() {
     return salesList;
 }
 
-// Add Button Event Listener
+
+const myModalAlternative = new bootstrap.Modal('#myModal');
+
+const modal = new bootstrap.Modal('#myModal') 
+
 addButton.addEventListener('click', function() {
+
+    modal.show();
+
+    
+});
+
+// Modal Function
+addItemButton.addEventListener('click', function() {
     let item = {
         title: "",
         image: "",
@@ -34,19 +47,23 @@ addButton.addEventListener('click', function() {
         sold: false,
         dateSold: ""
     };
-    item.title = prompt("Enter the item name", "Item Name");
-    item.image = prompt("Enter the item image URL", "Image URL");
-    item.price = prompt("Enter the item price", "$0.00");
-
+    if (true) {
+    item.title = document.querySelector("#Item-title").value;
+    item.image = document.querySelector("#Item-image").value;
+    item.price = document.querySelector("#Item-price").value;
     if(!item.title || !item.image || !item.price) {
         alert("Please enter all the information");
         return;
     }
     else {
-
-    addItem(item);
+        addItem(item);
+        modal.hide();
     }
-});
+}
+else {
+    alert("Item not added");
+}
+});   
 
 // Add Item Function
 function addItem(item, updateList = true) {
