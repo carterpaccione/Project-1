@@ -69,16 +69,17 @@ addItemButton.addEventListener('click', function() {
         item.title = modalTitle.value;
         item.image = modalImage.value;
         item.price = modalPrice.value;
-        if(!item.title || !item.image || !item.price) {
-            alert("Please enter all the information");
+        if(!item.title || !item.price) {
+            alert("Please enter the required information");
             return;
+        }
+        else if(!item.image.includes("http")) {
+            item.image = "./assets/images/placeholderimage.png";
+            addItem(item);
         }
         else {
             addItem(item);
             modal.hide();
-            modalTitle.innerHTML = "";
-            modalImage.innerHTML = "";
-            modalPrice.innerHTML = "";
             
         }
     }
@@ -154,6 +155,11 @@ divRow.addEventListener('click', function(event) {
                 let soldItem = inventoryList.splice(inventoryList.indexOf(item), 1)[0];
                 salesList.push(soldItem);
                 item.dateSold = prompt("Enter the date sold", "MM/DD/YYYY");
+                
+                if(!item.dateSold.length === 10 || !item.dateSold.includes("/")) {
+                    alert("Please enter a valid date");
+                    return;
+                }
 
                 // Update localStorage
                 localStorage.setItem('inventory', JSON.stringify(inventoryList));
@@ -163,6 +169,7 @@ divRow.addEventListener('click', function(event) {
                 itemElement.remove();
                 renderSales();
                 updateNoInventoryText();
+                updateChart();
             }
         }
         else{
