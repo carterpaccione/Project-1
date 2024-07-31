@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <h1>Inventory Manager</h1>
+        <h1>📦Inventory Manager</h1>
         <nav>
             <ul>
                 <li><a href="#inventoryEl">Inventory</a></li>
@@ -20,7 +20,7 @@
     </header>
 
     <main>
-         <section class="container text-center" class="main-section">
+         <section class="container text-center" class="main-section" id="inventorySection">
             <div>
                 <h2>Inventory</h2>
                 <button type="button" class="btn btn-success" id="add-button">Add Item</button>
@@ -50,9 +50,10 @@
               <p id="revenueEl">Total Revenue: 0</p>
          </section>
 
-         <section id="chartEl" class="main-section">
+         <!-- <section id="chartEl" class="main-section">
             <h2>Revenue Chart</h2>
-         </section>
+            <div id="myPlot" style="width:100%;max-width:700px"></div>
+         </section> -->
 
          <div class="modal" tabindex="-1" id="myModal">
             <div class="modal-dialog">
@@ -62,8 +63,8 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <input type="text" id="Item-title" placeholder="*Item Name*"> 
-                  <input type="text" id="Item-image" placeholder="Image URL">   
+                  <input type="text" id="Item-title" placeholder="*Item Name*">
+                  <input type="text" id="Item-image" placeholder="Image URL">
                   <input type="text" id="Item-price" placeholder="*Item Price*">
                 </div>
                 <div class="modal-footer">
@@ -82,5 +83,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script src="./assets/scripts/scripts.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="./assets/scripts/w3schoolsChart.js"></script>
 </body>
 </html>
