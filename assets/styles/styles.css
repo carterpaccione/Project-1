@@ -2,12 +2,25 @@
 /*Custom Font Test */
 @font-face {
     font-family: 'Surface-Sharpened';
-    src: url(./Surface-Sharpened.ttf);
+    src: url(../fonts/Surface-Sharpened.ttf);
 }
 
-/* Reset CSS if needed */
-:root {
+@font-face {
+    font-family: 'Calistoga-Regular';
+    src: url(../fonts/Calistoga-Regular.ttf);
+}
 
+/* Set Variables */
+:root {
+    --charcoal: #37404A;
+    --darkblue: #192841;
+    --bluegrey: #3d8b7f;
+    --greenish: #65ac8c;
+    --other: #eff1c3;
+
+    --springGreen: #5EFC8D;
+    --iceBlue: #8EF9F3;
+    --powderBlue: #93BEDF;
 }
 
 *{
@@ -120,7 +133,7 @@ h2 {
 }
 
 #sold-button {
-    background-color: green;
+    background-color: var(--springGreen);
     color: #192841;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }

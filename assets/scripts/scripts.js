@@ -8,6 +8,10 @@ let revenueEl = document.getElementById('revenueEl');
 let divRow = document.querySelector("div.row");
 let addItemButton = document.getElementById('addItemButton')
 
+let modalTitle = document.querySelector("#Item-title");
+let modalImage = document.querySelector("#Item-image");
+let modalPrice = document.querySelector("#Item-price");
+
 
 //Helper Functions
 function loadInventory() {
@@ -26,6 +30,20 @@ function loadSales() {
     return salesList;
 }
 
+function updateNoInventoryText () {
+    let inventoryList = loadInventory();
+    let h3 = inventoryEl.querySelector("h3");
+    if(h3 && inventoryList.length > 0) {
+        h3.remove();
+    }
+    else if(!h3 && inventoryList.length == 0) {
+        h3 = document.createElement("h3");
+        h3.textContent = "No Inventory To Display";
+        inventoryEl.appendChild(h3);
+    }
+}
+
+//Add Button Event Listener
 
 const myModalAlternative = new bootstrap.Modal('#myModal');
 
@@ -48,21 +66,22 @@ addItemButton.addEventListener('click', function() {
         dateSold: ""
     };
     if (true) {
-    item.title = document.querySelector("#Item-title").value;
-    item.image = document.querySelector("#Item-image").value;
-    item.price = document.querySelector("#Item-price").value;
-    if(!item.title || !item.image || !item.price) {
-        alert("Please enter all the information");
-        return;
+        item.title = modalTitle.value;
+        item.image = modalImage.value;
+        item.price = modalPrice.value;
+        if(!item.title || !item.image || !item.price) {
+            alert("Please enter all the information");
+            return;
+        }
+        else {
+            addItem(item);
+            modal.hide();
+            modalTitle.innerHTML = "";
+            modalImage.innerHTML = "";
+            modalPrice.innerHTML = "";
+            
+        }
     }
-    else {
-        addItem(item);
-        modal.hide();
-    }
-}
-else {
-    alert("Item not added");
-}
 });   
 
 // Add Item Function
@@ -79,7 +98,7 @@ function addItem(item, updateList = true) {
     <div class="card-body">
     <h5 class="card-title">${item.title}</h5>
     <p class="card-text">$${item.price}</p>
-    <button id="sold-button" class="btn btn-primary">Sold</button
+    <button id="sold-button" class="btn btn-primary">Sold</button>
     </div>
     `;
 
@@ -89,6 +108,7 @@ function addItem(item, updateList = true) {
         inventoryList.push(item); // Add the item to the inventory list
         localStorage.setItem('inventory', JSON.stringify(inventoryList)); // Save the inventory list to local storage
     }
+    updateNoInventoryText();
 }
 
 // Show Inventory Function
@@ -105,10 +125,8 @@ function showInventory() {
         h3.textContent = "No Inventory To Display";
         inventoryEl.appendChild(h3);
     }
+    updateNoInventoryText();
 };
-
-// Loads Inventory
-//window.onload = showInventory();
 
 // Sold Button Event Listener
 
@@ -144,6 +162,7 @@ divRow.addEventListener('click', function(event) {
                 // Optionally, remove the item from the DOM
                 itemElement.remove();
                 renderSales();
+                updateNoInventoryText();
             }
         }
         else{
@@ -171,7 +190,7 @@ function renderSales() {
         let row = document.createElement('tr');
         row.innerHTML = `
         <td>${item.title}</td>
-        <td>${item.price}</td>
+        <td>$${item.price}</td>
         <td>${item.dateSold}</td>
         `;
         tableBody.appendChild(row);
@@ -181,10 +200,10 @@ function renderSales() {
         sum += parseFloat(item.price);
     }
     revenueEl.textContent = `Total Revenue: $${sum.toFixed(2)}`;
-    showInventory();
 }
 
 window.onload = renderSales();
+window.onload = showInventory();
 
 // Total Revenue Math
 
