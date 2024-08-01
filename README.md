@@ -14,8 +14,9 @@
 
     Example:
 
-![Screenshot of App](./assets/images/UI_Screenshot_Example.png)
+![Screenshot of App](./assets/images/Screenshot_Example.png)
+![Screenshot of App](./assets/images/Screenshot_Example2.png)
 
 ## Link to App
 
-    Our app can be located here: https://carterpaccione.github.io/Project-1/
+Our app is located here: https://carterpaccione.github.io/Project-1/
