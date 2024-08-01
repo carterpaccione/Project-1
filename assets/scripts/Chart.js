@@ -10,6 +10,9 @@ const salesChart = new Chart(
           },
           tooltip: {
             enabled: false
+          },
+          customCanvasBackgroundColoer: {
+            color: 'white'
           }
         }
       },
@@ -27,7 +30,7 @@ const salesChart = new Chart(
 
   function updateChart(chart) {
     let salesList = loadSales();
-  
+    chart.data.datasets[0].data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     for(let i = 0; i < salesList.length; i++) {
         let item = salesList[i];
         let price = Number(item.price);
@@ -38,3 +41,17 @@ const salesChart = new Chart(
     chart.update();
   }
   updateChart(salesChart);
+
+  // Plugins
+
+  const plugin = {
+    id: 'customCanvasBackgroundColor',
+    beforeDraw: (chart, args, options) => {
+      const {ctx} = chart;
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = options.color || '#99ffff';
+      ctx.fillRect(0, 0, chart.width, chart.height);
+      ctx.restore();
+    }
+  };
