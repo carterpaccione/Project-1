@@ -154,9 +154,9 @@ divRow.addEventListener('click', function(event) {
                 item.sold = true;
                 let soldItem = inventoryList.splice(inventoryList.indexOf(item), 1)[0];
                 salesList.push(soldItem);
-                item.dateSold = prompt("Enter the date sold", "MM/DD/YYYY");
+                item.dateSold = prompt("Enter the date sold", "MM/DD");
                 
-                if(!item.dateSold.length === 10 || !item.dateSold.includes("/")) {
+                if(item.dateSold.length !== 5 || !item.dateSold.includes("/")) {
                     alert("Please enter a valid date");
                     return;
                 }
@@ -198,7 +198,7 @@ function renderSales() {
         row.innerHTML = `
         <td>${item.title}</td>
         <td>$${item.price}</td>
-        <td>${item.dateSold}</td>
+        <td>${item.dateSold}/2024</td>
         `;
         tableBody.appendChild(row);
         localStorage.setItem('sales', JSON.stringify(salesList));
