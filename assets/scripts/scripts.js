@@ -169,7 +169,7 @@ divRow.addEventListener('click', function(event) {
                 itemElement.remove();
                 renderSales();
                 updateNoInventoryText();
-                updateChart();
+                updateChart(salesChart);
             }
         }
         else{
