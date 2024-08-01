@@ -130,6 +130,8 @@ h2 {
     /* object-fit: scale-down; */
 }
 
+
+
 .card h5 {
     color: white;
     font-size: x-large;
@@ -147,6 +149,12 @@ h2 {
     background-color: var(--springGreen);
     color: #192841;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#workingChart {
+    margin-left: 34%;
+    background-color: #2a2a2a;
+    border: 3px, solid, #192841;
 }
 
 /* modal styles */

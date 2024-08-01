@@ -14,7 +14,7 @@
 
     Example:
 
-    ![Screenshot of App](assets/images/UI_Screenshot_Example.png)
+![Screenshot of App](./assets/images/UI_Screenshot_Example.png)
 
 ## Link to App
 
